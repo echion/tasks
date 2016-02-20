@@ -8,9 +8,11 @@ module.exports = function(asyncCallback) {
       morgan = require('morgan'),
       logger = require('winston'),
       router = express.Router(),
+      helmet = require('helmet'),
       port = process.env.API_PORT || 8080;
     
   app.disable('etag');
+  app.use(helmet());
   app.use(morgan('common'));
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json({type: '*/*'}));
