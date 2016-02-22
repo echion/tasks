@@ -1,8 +1,7 @@
-module.exports = function(asyncCallback) {
+module.exports = function(app) {
   'use strict';
 
   var express = require('express'),
-      app = express(),
       files = require('require-dir')('./api'),
       bodyParser = require('body-parser'),
       morgan = require('morgan'),
@@ -35,10 +34,7 @@ module.exports = function(asyncCallback) {
     next(err);
   });
   
-  logger.info('[SERVER] Listening on port ' + port);
-
-  app.listen(port);
-  
-  if (asyncCallback)
-    return asyncCallback();
+  app.listen(port, function() {
+      logger.info('[SERVER] Listening on port ' + port);
+  });
 };

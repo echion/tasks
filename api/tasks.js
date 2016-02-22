@@ -4,6 +4,7 @@ function add(req, res, next) {
 
 function getById(req, res, next) {
 	res.json({
+		id: req.params.id,
 		name: 'Do it!'
 	});
 }
@@ -21,7 +22,7 @@ module.exports = function(router) {
 
 	// This will handle the url calls for /users/:user_id
 	router
-		.route('/tasks/:taskId')
+		.route('/tasks/:id')
 		.get(getById) 
 		.delete(remove);
 
