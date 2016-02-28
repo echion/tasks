@@ -1,6 +1,7 @@
 'use strict';
 
-var routes = require('./routes'),
+var env = require('./config'),
+    routes = require('./routes'),
     async = require('async'),
     logger = require('winston'),
     app = require('express')();

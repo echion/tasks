@@ -28,6 +28,7 @@
     "describe": true,
     "it": true,
     "beforeEach": true,
-    "before": true
+    "before": true,
+    "request": true
   }
 }

@@ -1,0 +1,5 @@
+--require ./test/globals.js
+--recursive
+--check-leaks
+--growl
+--timeout 5000

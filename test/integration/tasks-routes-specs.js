@@ -1,9 +1,18 @@
 'use strict';
 
-var request = require('supertest'),
-	app = require('../app');
+var dropDatabase = require('./drop-database'),
+    app;
 
 describe('tasks', function() {
+  before(function(done) {
+    app = require('../../app');
+    done();
+  });
+
+  beforeEach('drop database', function(done) {
+    dropDatabase(done);
+  });
+
   describe('getById', function () {	
     it('should return a task', function (done) {
     	request(app)
@@ -11,7 +20,7 @@ describe('tasks', function() {
     		.expect('Content-Type', /json/)
     		.expect(200)
             .expect(function(res) {
-                res.body.id = '2';
+                res.body.id.should.equal('2');
             })
             .end(done);
     });

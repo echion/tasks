@@ -1,15 +1,16 @@
 module.exports = function(app) {
   'use strict';
 
-  var express = require('express'),
+  var env = require('./config'),
+      express = require('express'),
       files = require('require-dir')('./api'),
       bodyParser = require('body-parser'),
       morgan = require('morgan'),
       logger = require('winston'),
       router = express.Router(),
       helmet = require('helmet'),
-      port = process.env.API_PORT || 8080;
-    
+      port = env.get('API_PORT');
+
   app.disable('etag');
   app.use(helmet());
   app.use(morgan('common'));
