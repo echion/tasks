@@ -10,3 +10,6 @@ dependencies:
     - docker info
     - docker build -t echion/tasks .
 
+general:
+  artifacts:
+    - ./coverage
