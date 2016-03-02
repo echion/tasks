@@ -1,9 +1,19 @@
+'use strict';
+
 var mongoose = require('mongoose'),
-	schema = mongoose.Schema({
+	Schema = mongoose.Schema,
+	taskSchema = new Schema({
 		name: String,
 		description: String,
-		completed: Boolean
-	}),
-	Task = mongoose.model('Task', schema);
+		status: Number
+	});
 
-module.exports = Task;
+taskSchema.set('toJSON', {
+     transform: function (doc, ret, options) {
+         ret.id = ret._id;
+         delete ret._id;
+         delete ret.__v;
+     }
+}); 
+
+module.exports = mongoose.model('Task', taskSchema);

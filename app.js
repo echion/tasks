@@ -1,25 +1,28 @@
 'use strict';
 
 var env = require('./config'),
-    routes = require('./routes'),
+    server = require('./server'),
     async = require('async'),
-    logger = require('winston'),
-    app = require('express')();
+    logger = require('./logger'),
+    mongoose = require('mongoose'),
+    app;
 
-logger.info('[APP] Starting server initialization');
+logger.info('[APP] Starting initialization...');
 
 // Initialize Modules
-async.parallel([
+async.series([
 	function(done) {
-		routes(app);
-		done();
+		mongoose.connect(env.get('DB_URI'), done);
+	},
+	function(done) {
+		app = server(done);
 	}
 ], 
 function(err) {
 	if (err)
-		logger.error('[APP] initialization failed', err);
+		logger.error('[APP] Initialization failed.', err);
 	else
-  		logger.info('[APP] initialized');
+  		logger.info('[APP] Initialized.');
 });
 
 module.exports = app;

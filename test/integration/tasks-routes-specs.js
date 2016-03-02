@@ -5,7 +5,7 @@ var dropDatabase = require('./drop-database'),
 
 describe('tasks', function() {
   before(function(done) {
-    app = require('../../app');
+    //app = require('../../app');
     done();
   });
 
@@ -15,7 +15,7 @@ describe('tasks', function() {
 
   describe('getById', function () {	
     it('should return a task', function (done) {
-    	request(app)
+    	request.agent("192.168.99.100:8080")
     		.get('/tasks/2')
     		.expect('Content-Type', /json/)
     		.expect(200)

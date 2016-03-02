@@ -1,0 +1,1 @@
+exports.task = require('./task');
