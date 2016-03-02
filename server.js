@@ -14,7 +14,7 @@ module.exports = function(done) {
 
   app.disable('etag');
   app.use(helmet());
-  app.use(morgan('common'));
+  app.use(morgan('common', { "stream": logger.stream }));
 
   // allows for rich objects and arrays to be encoded into the URL-encoded format
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,6 +22,7 @@ module.exports = function(done) {
   // parse all media types
   app.use(bodyParser.json({ type: '*/*' }));
 
+  // register all api routes
   require('./api')(app);
 
   // handle validation errors

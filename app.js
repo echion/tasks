@@ -9,11 +9,10 @@ var env = require('./config'),
 
 logger.info('[APP] Starting initialization...');
 
+mongoose.connect(env.get('DB_URI'));
+
 // Initialize Modules
 async.series([
-	function(done) {
-		mongoose.connect(env.get('DB_URI'), done);
-	},
 	function(done) {
 		app = server(done);
 	}

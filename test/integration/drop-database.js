@@ -2,12 +2,14 @@
 
 module.exports = function(done) {
 	var mongoose = require('mongoose'),
-		env = require('../../config');
+		env = require('../../config'),
+		conn = mongoose.createConnection(env.get('DB_URI'));
 
-	mongoose.connect(env.get('DB_URI'), function() {
-        mongoose.connection.db.dropDatabase(function() {
-        	console.log('database dropped');
-            done();
-        });    
+	conn.once('open', function() {
+       	for (var i in mongoose.connection.collections) {
+	      mongoose.connection.collections[i].remove(function() {});
+	    }
+	    
+	    done();
     });
 };
