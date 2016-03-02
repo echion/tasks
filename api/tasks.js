@@ -30,11 +30,15 @@ module.exports = function(router) {
 		task.save(function(err) {
 			if (err) return next(err);
 
-			res.json(task);
+			res.status(201).json(task);
 		});
 	});
 
-	router.delete('/tasks/:id', function(req, res) {
+	router.delete('/tasks/:id', function(req, res, next) {
+		Task.findByIdAndRemove(req.params.id, function(err) {
+			if (err) return next(err);
 
+			return res.sendStatus(204);
+		});
 	});
 };
