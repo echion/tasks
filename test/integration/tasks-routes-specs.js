@@ -48,6 +48,20 @@ describe('task routes', function() {
       .end(done);
   });
 
+  it('getById with missing id should return not found', function(done) {
+    request.agent(app)
+      .get('/tasks/56d7a61f1364243923250138')
+      .expect(404)
+      .end(done);
+  });
+
+  it('getById with invalid id should return bad request', function(done) {
+    request.agent(app)
+      .get('/tasks/5')
+      .expect(400)
+      .end(done);
+  });
+
   it('post should add a task', function(done) {
     request.agent(app)
           .post('/tasks')
@@ -59,10 +73,25 @@ describe('task routes', function() {
           .end(done);
   });
 
+  it('post with missing name should return bad request', function(done) {
+    request.agent(app)
+          .post('/tasks')
+          .send({ description: 'another new task'})
+          .expect(400)
+          .end(done);
+  });
+
   it('delete should remove task', function(done) {
     request.agent(app)
       .delete('/tasks/' + task.id)
       .expect(204)
+      .end(done);
+  });
+
+  it('delete with invalid id should return bad request', function(done) {
+    request.agent(app)
+      .delete('/tasks/5')
+      .expect(400)
       .end(done);
   });
 });

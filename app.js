@@ -4,12 +4,10 @@ var env = require('./config'),
     server = require('./server'),
     async = require('async'),
     logger = require('./logger'),
-    mongoose = require('mongoose'),
+    db = require('./db'),
     app;
 
 logger.info('[APP] Starting initialization...');
-
-mongoose.connect(env.get('DB_URI'));
 
 // Initialize Modules
 async.series([

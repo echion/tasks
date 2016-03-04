@@ -13,7 +13,7 @@ module.exports = function(router) {
 		});
 	});
 
-	router.get('/tasks/:id', function(req, res, next) {
+	router.get('/tasks/:id', validate(rules.id), function(req, res, next) {
 		Task.findById(req.params.id, function(err, task) {
 			if (err) return next(err);
 
@@ -34,7 +34,7 @@ module.exports = function(router) {
 		});
 	});
 
-	router.delete('/tasks/:id', function(req, res, next) {
+	router.delete('/tasks/:id', validate(rules.id), function(req, res, next) {
 		Task.findByIdAndRemove(req.params.id, function(err) {
 			if (err) return next(err);
 
