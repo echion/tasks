@@ -5,7 +5,15 @@ var mixins = require('./mixins'),
 	Schema = mongoose.Schema,
 	taskSchema = new Schema({
 		name: String,
-		description: String,
+		notes: String,
+		priority: Number,
+		dueBy: Date,
+		scheduledFor: Date,
+		categoryId: Schema.Types.ObjectId,
+		assignedTo: Schema.Types.ObjectId,
+		tags: [Schema.Types.ObjectId],
+		estimatedDuration: Number,
+		actualDuration: Number,
 		status: Number
 	});
 
