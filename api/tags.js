@@ -24,7 +24,7 @@ module.exports = function(router) {
 	});
 
 	router.post('/tags', validate(rules.tag), function(req, res, next) {
-		Tag.findOne(req.body, function(err, tag) {
+		Tag.findOne({ normalizedName: req.body.name.toLowerCase() }, function(err, tag) {
 			if (err) return next(err);
 
 			if (tag)
