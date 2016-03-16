@@ -12,7 +12,7 @@ dependencies:
 database:
   override:
     - sudo cp tools/neo4j/plugins/* /usr/share/neo4j/plugins/
-    - sudo echo 'org.neo4j.server.thirdparty_jaxrs_classes=com.graphaware.server=/graphaware' >> /etc/neo4j/neo4j-server.properties
+    - sudo sh -c "echo 'org.neo4j.server.thirdparty_jaxrs_classes=com.graphaware.server=/graphaware' >> /etc/neo4j/neo4j-server.properties"
     - neo4j restart
 
 test:
