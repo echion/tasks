@@ -1,20 +1,26 @@
 machine:
   services:
     - docker
-    - mongodb
+    - neo4j
   node:
     version: v5.6.0
 
 dependencies:
   override:
     - npm install
-    - npm test
-    - docker info
-    - docker build -t echion/tasks .
+
+database:
+  override:
+    - sudo cp tools/neo4j/plugins/* /usr/share/neo4j/plugins/
+    - sudo echo 'org.neo4j.server.thirdparty_jaxrs_classes=com.graphaware.server=/graphaware' >> /etc/neo4j/neo4j-server.properties
+    - neo4j restart
 
 test:
   override:
-
+    - npm test
+  post:
+    - docker info
+    - docker build -t echion/tasks .    
     
 general:
   artifacts:
