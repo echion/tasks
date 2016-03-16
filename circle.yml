@@ -1,5 +1,6 @@
 machine:
   pre:
+    - sudo sed -i "s|dbms.security.auth_enabled=true|dbms.security.auth_enabled=false|g" /etc/neo4j/neo4j-server.properties
     - sudo sh -c "echo 'org.neo4j.server.thirdparty_jaxrs_classes=com.graphaware.server=/graphaware' >> /etc/neo4j/neo4j-server.properties"
     - sudo cp tasks/tools/neo4j/plugins/* /usr/share/neo4j/plugins/
   services:
