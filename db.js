@@ -1,27 +1,37 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-	env = require('./config'),
-	logger = require('./logger'); 
+var env = require('./config'),
+	db = require("seraph")({ 
+		server: env.get('DB_URI'),
+		user: env.get('DB_USER'),
+		pass: env.get('DB_PASSWORD') 
+	}),
+	BPromise = require('bluebird');
 
-mongoose.connect(env.get('DB_URI')); 
+module.exports = BPromise.promisifyAll(db);
 
-mongoose.connection.on('connected', function () {  
-  logger.debug('[DB] Mongoose connection open to ' + env.get('DB_URI'));
-}); 
+// var mongoose = require('mongoose'),
+// 	env = require('./config'),
+// 	logger = require('./logger'); 
 
-mongoose.connection.on('error',function (err) {  
-  logger.error('[DB] Mongoose connection error',  { error: err });
-}); 
+// mongoose.connect(env.get('DB_URI')); 
 
-mongoose.connection.on('disconnected', function () {  
-  logger.debug('[DB] Mongoose connection disconnected'); 
-});
+// mongoose.connection.on('connected', function () {  
+//   logger.debug('[DB] Mongoose connection open to ' + env.get('DB_URI'));
+// }); 
 
-// If the Node process ends, close the Mongoose connection 
-process.on('SIGINT', function() {  
-  mongoose.connection.close(function () { 
-    console.log('[DB] Mongoose connection disconnected through app termination'); 
-    process.exit(0); 
-  }); 
-}); 
+// mongoose.connection.on('error',function (err) {  
+//   logger.error('[DB] Mongoose connection error',  { error: err });
+// }); 
+
+// mongoose.connection.on('disconnected', function () {  
+//   logger.debug('[DB] Mongoose connection disconnected'); 
+// });
+
+// // If the Node process ends, close the Mongoose connection 
+// process.on('SIGINT', function() {  
+//   mongoose.connection.close(function () { 
+//     console.log('[DB] Mongoose connection disconnected through app termination'); 
+//     process.exit(0); 
+//   }); 
+// }); 

@@ -1,28 +1,33 @@
 'use strict';
 
-var mixins = require('./mixins'),
-	mongoose = require('mongoose'),
-	Schema = mongoose.Schema,
-	tagSchema = new Schema({
-		name: String,
-		normalizedName: String
-	});
+const db = require('../db'),
+	  label = 'Tag';
 
-tagSchema.pre('save', function (next) {
-	this.normalizedName = this.name.toLowerCase();
-	next();
-});
+module.exports = {
+	findByIdAsync: function(id) {
+		return db.readAsync(id);
+	},
+	findAsync: function(predicate, any) {
+		return db.findAsync(predicate || {}, any, label);
+	},
+	getByNameOrCreateAsync: function(name) {
+		return db.findAsync({ name: name }, label)
+				 .then(function(tags) {
+				 	if (tags.length > 0)
+				 		return Promise.resolve(tags[0]);
 
-mixins.extend(tagSchema);
+				 	return db.saveAsync({ name: name }, label);
+				 });
+	},
+	renameAsync: function(id, newName) {
+		return db.readAsync(id)
+				 .then(function(tag) {
+				 	tag.name = newName;
 
-tagSchema.set('toJSON', {
-	transform: function (doc, ret, options) {
-		ret.id = ret._id;
-
-		delete ret.normalizedName;
-		delete ret._id;
-		delete ret.__v;
+				 	return db.saveAsync(tag);
+				 });
+	},
+	deleteAsync: function(id) {
+		return db.deleteAsync(id, true);
 	}
-}); 
-
-module.exports = mongoose.model('Tag', tagSchema);
+};

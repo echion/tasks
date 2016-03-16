@@ -25,6 +25,7 @@
   "homepage": "https://github.com/echion/tasks#readme",
   "dependencies": {
     "async": "^1.5.2",
+    "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
     "envalid": "^0.2.0",
     "errorhandler": "^1.4.3",
@@ -36,6 +37,7 @@
     "mongoose": "^4.4.5",
     "morgan": "^1.6.1",
     "require-dir": "^0.3.0",
+    "seraph": "^0.14.2",
     "winston": "^2.1.1"
   },
   "devDependencies": {
@@ -45,6 +47,7 @@
     "mocha": "^2.4.5",
     "should": "^8.2.2",
     "sinon": "^1.17.3",
+    "superagent": "^1.8.1",
     "supertest": "^1.2.0"
   }
 }

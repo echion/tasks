@@ -1,62 +1,57 @@
 module.exports = function(router) {
   	'use strict';
 
-  	var Task = require('../models/task'),
-  		rules = require('../validation'),
+  	//var Task = require('../models/task'),
+  	var	rules = require('../validation'),
   		validate = require('express-validation'),
-  		taskStatuses = require('../models/task-statuses');
+  		taskStatuses = require('../models/task-statuses'),
+  		Model = require('../models/task');
 
 	router.get('/tasks', function(req, res, next) {
-		Task.find(function(err, tasks) {
-			if (err) return next(err);
-
-			res.json(tasks || []);
-		});
+		Model.findAsync(req.params)
+			 .then(function(tasks) { 
+			 	res.json(tasks || []); 
+			 })
+			 .catch(next);
 	});
 
 	router.get('/tasks/:id', validate(rules.id), function(req, res, next) {
-		Task.findById(req.params.id, function(err, task) {
-			if (err) return next(err);
-
-			if (!task) return res.sendStatus(404);
-
-			res.json(task);
-		});
+		Model.findByIdAsync(req.params.id)
+			 .then(function(task) { 
+			 	res.json(task); 
+			 })
+			 .catch(next);
 	});
 
 	router.post('/tasks', validate(rules.task), function(req, res, next) {
-		var task = new Task(req.body);
-
-		task.status = taskStatuses.InProgress;
-
-		task.save(function(err) {
-			if (err) return next(err);
-
-			res.status(201).json(task);
-		});
+		Model.defineAsync(req.body)
+			 .then(function(task) {
+				res.status(201).json(task);
+			 })
+			 .catch(next);
 	});
 
 	router.post('/tasks/:id/done', validate(rules.id), function(req, res, next) {
-		Task.findByIdAndUpdate(req.params.id, { status: taskStatuses.Completed }, function(err) {
-			if (err) return next(err);
-
-			return res.sendStatus(204);
-		});
+		Model.completeAsync(req.params.id)
+			 .then(function() {
+			 	res.sendStatus(204);
+			 })
+			 .catch(next);
 	});
 
 	router.post('/tasks/:id/cancel', validate(rules.id), function(req, res, next) {
-		Task.findByIdAndUpdate(req.params.id, { status: taskStatuses.Cancelled }, function(err) {
-			if (err) return next(err);
-
-			return res.sendStatus(204);
-		});
+		Model.cancelAsync(req.params.id)
+			 .then(function() {
+			 	res.sendStatus(204);
+			 })
+			 .catch(next);
 	});
 
 	router.delete('/tasks/:id', validate(rules.id), function(req, res, next) {
-		Task.findByIdAndRemove(req.params.id, function(err) {
-			if (err) return next(err);
-
-			return res.sendStatus(204);
-		});
+		Model.deleteAsync(req.params.id)
+			 .then(function() {
+			 	res.sendStatus();
+			 })
+			 .catch(next);
 	});
 };

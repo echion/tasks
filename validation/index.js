@@ -7,7 +7,7 @@ exports.tag = require('./tag');
 
 exports.id = {
   params: {
-    id: Joi.objectId().required()
+    id: Joi.number().required()
   }
 };
 

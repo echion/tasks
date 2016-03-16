@@ -1,58 +1,45 @@
 module.exports = function(router) {
   	'use strict';
 
-  	var Tag = require('../models/tag'),
+  	var Model = require('../models/tag'),
   		rules = require('../validation'),
   		validate = require('express-validation');
 
 	router.get('/tags', function(req, res, next) {
-		Tag.find(function(err, tags) {
-			if (err) return next(err);
-
-			res.json(tags || []);
-		});
+		Model.findAsync(req.params)
+			 .then(function(tag) { 
+			 	res.json(tag || []); 
+			 })
+			 .catch(next);
 	});
 
 	router.get('/tags/:id', validate(rules.id), function(req, res, next) {
-		Tag.findById(req.params.id, function(err, tag) {
-			if (err) return next(err);
-
-			if (!tag) return res.sendStatus(404);
-
-			res.json(tag);
-		});
+		Model.findByIdAsync(req.params.id)
+			 .then(function(tag) { 
+			 	res.json(tag); 
+			 })
+			 .catch(next);
 	});
 
 	router.post('/tags', validate(rules.tag), function(req, res, next) {
-		Tag.findOne({ normalizedName: req.body.name.toLowerCase() }, function(err, tag) {
-			if (err) return next(err);
-
-			if (tag)
-				return res.json(tag);
-
-			tag = new Tag(req.body);
-
-			tag.save(function(err) {
-				if (err) return next(err);
-
-				res.status(201).json(tag);
-			});
-		});
+		Model.getByNameOrCreateAsync(req.body.name)
+			 .then(function(tag) { 
+			 	res.status(200).json(tag); 
+			 })
+			 .catch(next);
 	});
 
 	router.put('/tags/:id', validate(rules.tag), function(req, res, next) {
-		Tag.findByIdAndUpdate(req.params.id, { name: req.body.name }, function(err, tag) {
-			if (err) return next(err);
-
-			return res.json(tag);
-		});
+		Model.renameAsync(req.params.id, req.body.name)
+			 .then(function(tag) { res.json(tag); })
+			 .catch(next);
 	});
 
 	router.delete('/tags/:id', validate(rules.id), function(req, res, next) {
-		Tag.findByIdAndRemove(req.params.id, function(err) {
-			if (err) return next(err);
-
-			return res.sendStatus(204);
-		});
+		Model.deleteAsync(req.params.id)
+			 .then(function() {
+			 	res.sendStatus(204);
+			 })
+			 .catch(next);
 	});
 };

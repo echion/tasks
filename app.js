@@ -4,7 +4,6 @@ var env = require('./config'),
     server = require('./server'),
     async = require('async'),
     logger = require('./logger'),
-    db = require('./db'),
     app;
 
 logger.info('[APP] Starting initialization...');

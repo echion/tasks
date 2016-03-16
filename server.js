@@ -25,10 +25,29 @@ module.exports = function(done) {
   // register all api routes
   require('./api')(app);
 
+  app.use(function(err, req, res, next) {
+    logger.debug(err);
+
+    next(err);
+  });
+
   // handle validation errors
   app.use(function(err, req, res, next) {
     if (err instanceof validation.ValidationError) 
       return res.status(err.status || 400).json(err);
+
+    next(err);
+  });
+
+  // neo4j not found errors
+  app.use(function(err, req, res, next) {
+    if (err.neo4jException === 'NodeNotFoundException') {
+      return res.status(404).json({
+        message: 'Not found',
+        stack: env.isDev ? err.stack : undefined,
+        status: 404
+      });
+    }
 
     next(err);
   });

@@ -25,7 +25,7 @@ describe('tag routes', function() {
     agent
       .post('/tags')
       .send({ name: 'Test tag' })
-      .expect(201)
+      .expect(200)
       .expect(function(res) {
         tag = res.body;
       })
@@ -56,14 +56,14 @@ describe('tag routes', function() {
 
   it('getById with missing id should return not found', function(done) {
     agent
-      .get('/tags/56d7a61f1364243923250138')
+      .get('/tags/0')
       .expect(404)
       .end(done);
   });
 
   it('getById with invalid id should return bad request', function(done) {
     agent
-      .get('/tags/5')
+      .get('/tags/s')
       .expect(400)
       .end(done);
   });
@@ -72,7 +72,7 @@ describe('tag routes', function() {
     agent
       .post('/tags')
       .send({ name: 'another new tag'})
-      .expect(201)
+      .expect(200)
       .expect(function(res) {
         res.body.should.have.property('id');
       })
@@ -139,7 +139,6 @@ describe('tag routes', function() {
       .end(done);
   });
 
-
   it('post with invalid property should return bad request', function(done) {
     agent
       .put('/tags/' + tag.id)
@@ -162,7 +161,7 @@ describe('tag routes', function() {
 
   it('delete with invalid id should return bad request', function(done) {
     agent
-      .delete('/tags/5')
+      .delete('/tags/s')
       .expect(400)
       .end(done);
   });

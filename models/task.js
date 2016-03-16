@@ -1,22 +1,45 @@
 'use strict';
 
-var mixins = require('./mixins'),
-	mongoose = require('mongoose'),
-	Schema = mongoose.Schema,
-	taskSchema = new Schema({
-		name: String,
-		notes: String,
-		priority: Number,
-		dueBy: Date,
-		scheduledFor: Date,
-		categoryId: Schema.Types.ObjectId,
-		assignedTo: Schema.Types.ObjectId,
-		tags: [Schema.Types.ObjectId],
-		estimatedDuration: Number,
-		actualDuration: Number,
-		status: Number
-	});
+const db = require('../db'),
+	  label = 'Task',
+  	  taskStatuses = require('../models/task-statuses'),
+  	  RuleError = require('./rule-error');
 
-mixins.extend(taskSchema);
+module.exports = {
+	findByIdAsync: function(id) {
+		return db.readAsync(id);
+	},
+	findAsync: function(predicate, any) {
+		return db.findAsync(predicate || {}, any, label);
+	},
+	defineAsync: function(object) {
+		object.status = taskStatuses.InProgress;
 
-module.exports = mongoose.model('Task', taskSchema);
+		return db.saveAsync(object, label);
+	},
+	completeAsync: function(id) {
+		return db.readAsync(id)
+				 .then(function(task) {
+				 	if (task.status === taskStatuses.Cancelled)
+						throw new RuleError('A cancelled task may not be completed', 400);
+
+					task.status = taskStatuses.Completed;
+
+					return db.saveAsync(task);
+				 });
+	},
+	cancelAsync: function(id) {
+		return db.readAsync(id)
+				 .then(function(task) {
+				 	if (task.status === taskStatuses.Cancelled)
+						throw new RuleError('A completed task may not be cancelled', 400);
+
+					task.status = taskStatuses.Cancelled;
+
+					return db.saveAsync(task);
+				 });
+ 	},
+	deleteAsync: function(id) {
+		return db.deleteAsync(id, true);
+	}
+};

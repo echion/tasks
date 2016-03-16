@@ -2,6 +2,7 @@
 
 var dropDatabase = require('./drop-database'),
     taskStatuses = require('../../models/task-statuses'),
+    logger = require('../../logger'),
     app,
     agent;
 
@@ -29,6 +30,7 @@ describe('task routes', function() {
       .expect(201)
       .expect(function(res) {
         task = res.body;
+        logger.debug('task ' + task.id + ' added');
       })
       .end(done);
   }); 
@@ -57,14 +59,14 @@ describe('task routes', function() {
 
   it('getById with missing id should return not found', function(done) {
     agent
-      .get('/tasks/56d7a61f1364243923250138')
+      .get('/tasks/0')
       .expect(404)
       .end(done);
   });
 
   it('getById with invalid id should return bad request', function(done) {
     agent
-      .get('/tasks/5')
+      .get('/tasks/s')
       .expect(400)
       .end(done);
   });
@@ -145,7 +147,7 @@ describe('task routes', function() {
 
   it('delete with invalid id should return bad request', function(done) {
     agent
-      .delete('/tasks/5')
+      .delete('/tasks/s')
       .expect(400)
       .end(done);
   });

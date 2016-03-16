@@ -20,6 +20,7 @@
   "maxlen": 100,
   "maxcomplexity": 5,
   "maxstatements": 200,
+  "esversion": 6,
   "globals": {
     "jQuery": true,
     "define": true,

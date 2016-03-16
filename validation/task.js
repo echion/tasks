@@ -1,10 +1,8 @@
 var Joi = require('joi');
 
-Joi.objectId = require('joi-objectid')(Joi);
-
 module.exports = {
   params: {
-  	id: Joi.objectId()
+  	id: Joi.number()
   },
   body: {
     name: Joi.string().required(),
