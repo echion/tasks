@@ -6,7 +6,7 @@ module.exports = function(router) {
   		validate = require('express-validation');
 
 	router.get('/tags', function(req, res, next) {
-		Model.findAsync(req.params)
+		Model.findAsync(req.query.name)
 			 .then(function(tag) { 
 			 	res.json(tag || []); 
 			 })
@@ -22,7 +22,7 @@ module.exports = function(router) {
 	});
 
 	router.post('/tags', validate(rules.tag), function(req, res, next) {
-		Model.getByNameOrCreateAsync(req.body.name)
+		Model.getByNameOrDefineAsync(req.body.name)
 			 .then(function(tag) { 
 			 	res.status(200).json(tag); 
 			 })

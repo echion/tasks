@@ -24,12 +24,18 @@ describe('tag routes', function() {
   beforeEach('add test data', function(done) {
     agent
       .post('/tags')
-      .send({ name: 'Test tag' })
+      .send({ name: 'Testing1' })
       .expect(200)
       .expect(function(res) {
         tag = res.body;
       })
-      .end(done);
+      .end(function() {
+        agent
+          .post('/tags')
+          .send({ name: 'Testing2' })
+          .expect(200)
+          .end(done);
+      });
   }); 
 
   it('get all should return tag', function(done) {
@@ -38,12 +44,12 @@ describe('tag routes', function() {
       .expect(200)
       .expect('Content-Type', /json/)
       .expect(function(res) {
-          res.body[0].id.should.equal(tag.id);
+          res.body.length.should.equal(2);
       })
       .end(done);
   });
 
-  it('getById should return a tag', function (done) {
+  it('get by id should return a tag', function (done) {
   	agent
   		.get('/tags/' + tag.id)
       .expect(200)
@@ -54,14 +60,38 @@ describe('tag routes', function() {
       .end(done);
   });
 
-  it('getById with missing id should return not found', function(done) {
+  it('get by name should return one tag', function(done) {
+    agent
+      .get('/tags?name=' + tag.name)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect(function(res) {
+          res.body.length.should.equal(1);
+          res.body[0].id.should.equal(tag.id);
+      })
+      .end(done);
+  });
+
+  it('get by name should be case insensitive', function(done) {
+    agent
+      .get('/tags?name=' + tag.name.toLowerCase())
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect(function(res) {
+          res.body.length.should.equal(1);
+          res.body[0].id.should.equal(tag.id);
+      })
+      .end(done);
+  });
+
+  it('get by id with missing id should return not found', function(done) {
     agent
       .get('/tags/0')
       .expect(404)
       .end(done);
   });
 
-  it('getById with invalid id should return bad request', function(done) {
+  it('get by id with invalid id should return bad request', function(done) {
     agent
       .get('/tags/s')
       .expect(400)
@@ -95,6 +125,18 @@ describe('tag routes', function() {
       })
       .end(done);
   });
+
+  it('post with existing should be case insensitive', function(done) {
+    agent
+      .post('/tags')
+      .send({ name: tag.name.toLowerCase() })
+      .expect(200)
+      .expect(function(res) {
+        res.body.id.should.equal(tag.id);
+        res.body.name.should.equal(tag.name);
+      })
+      .end(done);
+  });  
 
   it('put should update a tag', function(done) {
     agent

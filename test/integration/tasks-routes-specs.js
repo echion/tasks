@@ -26,13 +26,19 @@ describe('task routes', function() {
   beforeEach('add test data', function(done) {
     agent
       .post('/tasks')
-      .send({ name: 'Test Task' })
+      .send({ name: 'Testing1' })
       .expect(201)
       .expect(function(res) {
         task = res.body;
         logger.debug('task ' + task.id + ' added');
       })
-      .end(done);
+      .end(function() {
+        agent
+          .post('/tasks')
+          .send({ name: 'Testing2' })
+          .expect(201)
+          .end(done);
+      });
   }); 
 
   it('get should return all tasks', function(done) {
@@ -41,12 +47,12 @@ describe('task routes', function() {
       .expect(200)
       .expect('Content-Type', /json/)
       .expect(function(res) {
-          res.body[0].id.should.equal(task.id);
+          res.body.length.should.equal(2);
       })
       .end(done);
   });
 
-  it('getById should return a task', function (done) {
+  it('get by id should return a task', function (done) {
   	agent
   		.get('/tasks/' + task.id)
       .expect(200)
@@ -57,14 +63,14 @@ describe('task routes', function() {
       .end(done);
   });
 
-  it('getById with missing id should return not found', function(done) {
+  it('get by id with missing id should return not found', function(done) {
     agent
       .get('/tasks/0')
       .expect(404)
       .end(done);
   });
 
-  it('getById with invalid id should return bad request', function(done) {
+  it('get by id with invalid id should return bad request', function(done) {
     agent
       .get('/tasks/s')
       .expect(400)

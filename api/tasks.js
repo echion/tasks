@@ -8,7 +8,7 @@ module.exports = function(router) {
   		Model = require('../models/task');
 
 	router.get('/tasks', function(req, res, next) {
-		Model.findAsync(req.params)
+		Model.findAsync(req.query)
 			 .then(function(tasks) { 
 			 	res.json(tasks || []); 
 			 })
