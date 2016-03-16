@@ -15,6 +15,7 @@ database:
     - sudo sh -c "echo 'org.neo4j.server.thirdparty_jaxrs_classes=com.graphaware.server=/graphaware' >> /etc/neo4j/neo4j-server.properties"
     - neo4j restart
 
+
 test:
   override:
     - npm test
