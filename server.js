@@ -28,12 +28,20 @@ module.exports = function(done) {
   // handle validation errors
   app.use(function(err, req, res, next) {
     if (err instanceof validation.ValidationError) 
-      return res.status(err.status).json(err);
+      return res.status(err.status || 400).json(err);
+
+    next(err);
   });
 
-  app.use(errorHandler({
-    showStack: env.isDev
-  }));
+  app.use(function(err, req, res, next) {
+    var status = err.status || err.statusCode || 500;
+
+    res.status(status).json({
+      message: err.message,
+      stack: env.isDev ? err.stack : undefined,
+      status: status
+    });
+  });
 
   app.listen(port, function() {
     logger.info('[SERVER] Listening on port ' + port);
