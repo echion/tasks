@@ -1,6 +1,7 @@
 test
 node_modules
 coverage
+tools
 circle.yml
 .jshintignore
 .jshintrc
