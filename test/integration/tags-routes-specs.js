@@ -84,6 +84,17 @@ describe('tag routes', function() {
       .end(done);
   });
 
+  it('get by invalid name should return empty array', function(done) {
+    agent
+      .get('/tags?name=junk')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .expect(function(res) {
+          res.body.length.should.equal(0);
+      })
+      .end(done);
+  });
+  
   it('get by id with missing id should return not found', function(done) {
     agent
       .get('/tags/0')
