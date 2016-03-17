@@ -3,5 +3,6 @@ node_modules
 coverage
 tools
 circle.yml
+.idea
 .jshintignore
 .jshintrc
