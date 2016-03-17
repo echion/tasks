@@ -10,7 +10,7 @@ module.exports = function(router) {
 	router.get('/tasks', function(req, res, next) {
 		Model.findAsync(req.query)
 			 .then(function(tasks) { 
-			 	res.json(tasks || []); 
+			 	res.json(tasks); 
 			 })
 			 .catch(next);
 	});

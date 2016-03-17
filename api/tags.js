@@ -8,7 +8,7 @@ module.exports = function(router) {
 	router.get('/tags', function(req, res, next) {
 		Model.findAsync(req.query.name)
 			 .then(function(tag) { 
-			 	res.json(tag || []); 
+			 	res.json(tag); 
 			 })
 			 .catch(next);
 	});
