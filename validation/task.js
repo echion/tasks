@@ -10,9 +10,7 @@ module.exports = {
 	priority: Joi.number(),
 	dueBy: Joi.date(),
 	scheduledFor: Joi.date(),
-	categoryId: Joi.objectId(),
-	assignedTo: Joi.objectId(),
-	tags: Joi.array(),
+	assignedTo: Joi.string(),
 	estimatedDuration: Joi.number(),
 	actualDuration: Joi.number(),
 	status: Joi.any().forbidden()
