@@ -15,6 +15,10 @@ module.exports = {
 
 		return db.findAsync(predicate, label);
 	},
+	findByResultIdAsync: function(id) {
+		return db.queryAsync('START r=node({id}) MATCH (Result)-[:tagged]->(t:Tag) RETURN t',
+							 { id: parseInt(id) });
+	},
 	getByNameOrDefineAsync: function(name) {
 		return db.findAsync({ normalizedName: name.toLowerCase() }, label)
 				 .then(function(tags) {

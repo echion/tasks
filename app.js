@@ -1,24 +1,23 @@
 'use strict';
 
 var env = require('./config'),
-    server = require('./server'),
-    async = require('async'),
     logger = require('./logger'),
-    app;
+    port = env.get('API_PORT'),
+    app = require('express')(),
+    initialize = require('express-initializers');
 
 logger.info('[APP] Starting initialization...');
 
-// Initialize Modules
-async.series([
-	function(done) {
-		app = server(done);
-	}
-], 
-function(err) {
-	if (err)
-		logger.error('[APP] Initialization failed.', err);
-	else
-  		logger.info('[APP] Initialized.');
-});
+initialize(app)
+    .then(function () {
+	  	app.listen(port, function() {
+	    	logger.info('[APP] Listening on port ' + port);
+	  	});    
+	})
+    .catch(function (err) {
+    	logger.error('[APP] Failed to initialize the API');
+    	logger.error(err);
+    	logger.error(err.stack);
+    });
 
 module.exports = app;

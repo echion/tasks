@@ -31,7 +31,7 @@ module.exports = {
 	cancelAsync: function(id) {
 		return db.readAsync(id)
 				 .then(function(task) {
-				 	if (task.status === taskStatuses.Cancelled)
+				 	if (task.status === taskStatuses.Completed)
 						throw new RuleError('A completed task may not be cancelled', 400);
 
 					task.status = taskStatuses.Cancelled;

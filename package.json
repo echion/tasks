@@ -24,12 +24,11 @@
   },
   "homepage": "https://github.com/echion/tasks#readme",
   "dependencies": {
-    "async": "^1.5.2",
     "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
     "envalid": "^0.2.0",
-    "errorhandler": "^1.4.3",
     "express": "^4.13.4",
+    "express-initializers": "0.0.1",
     "express-validation": "^0.5.0",
     "helmet": "^1.1.0",
     "joi-objectid": "^2.0.0",
