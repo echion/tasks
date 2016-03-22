@@ -2,7 +2,7 @@
 
 var dropDatabase = require('./drop-database');
 
-describe('tag routes', function() {
+describe('task model', function() {
   var taskModel = require('../../models/task');
 
   before('init app', function(done) {
@@ -14,11 +14,11 @@ describe('tag routes', function() {
     dropDatabase(done);
   });
 
-  it('get all with undefined filter should still return', function(done) {
+  it('find all with no filter should still return results', function(done) {
     taskModel.findAsync()
-	    	 .then(function(tasks) {
-	    	 	tasks.should.be.empty();
-	    	 	done();
-	    	 });
+	    	     .then(function(tasks) {
+	    	 	      tasks.should.be.empty();
+	    	 	      done();
+	    	     });
   });
 });
