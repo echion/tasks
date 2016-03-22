@@ -30,13 +30,11 @@ module.exports = function(router) {
 	});
 
 	router.put('/results/:id', validate(rules.result), function(req, res, next) {
-		var result = req.body;
+		req.body.id = req.params.id;
 
-		result.id = req.params.id;
-
-		Model.updateAsync(result)
-			 .then(function(r) { 
-			 	res.json(r); 
+		Model.updateAsync(req.body)
+			 .then(function(result) {
+			 	res.json(result); 
 			 })
 			 .catch(next);
 	});

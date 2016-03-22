@@ -96,4 +96,20 @@ describe('result tags routes', function() {
           .end(done);
       });
   });
+
+  it('remove unrealted tag should ignore the attempt and return', function(done) {
+    agent
+      .delete('/results/' + result.id + '/tags/0') 
+      .expect(204)
+      .end(function() {
+        agent
+          .get('/results/' + result.id + '/tags')
+          .expect(200)
+          .expect(function(res) {
+            res.body.length.should.equal(1);
+            res.body[0].id.should.equal(tag1.id);
+          })
+          .end(done);
+      });
+  });
 });

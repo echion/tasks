@@ -103,24 +103,24 @@ describe('tag routes', function() {
       });
   });  
 
-  // it('put should update a result', function(done) {
-  //   agent
-  //     .put('/results/' + result.id)
-  //     .send({ name: 'name2'})
-  //     .expect(200)
-  //     .expect(function(res) {
-  //       res.body.name.should.equal('name2');
-  //     })
-  //     .end(function() {
-  //       agent
-  //         .get('/results/' + result.id)
-  //         .expect(200)
-  //         .expect(function(res) {
-  //           res.body.name.should.equal('name2');
-  //         })
-  //         .end(done);
-  //     });
-  // });
+  it('put should update a result', function(done) {
+    agent
+      .put('/results/' + result.id)
+      .send({ name: 'updated name'})
+      .expect(200)
+      .expect(function(res) {
+        res.body.name.should.equal('updated name');
+      })
+      .end(function() {
+        agent
+          .get('/results/' + result.id)
+          .expect(200)
+          .expect(function(res) {
+            res.body.name.should.equal('updated name');
+          })
+          .end(done);
+      });
+  });
 
   it('post with missing name should return bad request', function(done) {
     agent

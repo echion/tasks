@@ -36,10 +36,15 @@ module.exports = {
 			});
 		});
 	},
-	updateAsync: function(id, object) {
-		object.id = id;
+	updateAsync: function(result) {
+		return new Promise(function(resolve, reject) {
+			db.save(result, function(err, updatedResult) {
+				if (err)
+					return reject(err);
 
-		return db.saveAsync(object, label);
+				resolve(updatedResult);
+			});
+		});
 	},
 	updateTagsAsync: function(resultId, tagIds) {
 	    return new Promise(function(resolve, reject) {
