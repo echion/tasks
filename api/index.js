@@ -1,18 +1,18 @@
+'use strict';
+
 module.exports = function(app) {
-  'use strict';
+    var controllers = require('require-dir')(),
+        express = require('express'),
+        logger = require('winston'),
+        router = express.Router();
 
-  var controllers = require('require-dir')(),
-      express = require('express'),
-      logger = require('winston'),
-      router = express.Router();
+    logger.debug('[API] Initializing routes...');
 
-  logger.debug('[API] Initializing routes...');
+    Object.keys(controllers).forEach(function(controllerName) {
+        logger.debug('[API] %s initialized.', controllerName);
 
-  Object.keys(controllers).forEach(function(controllerName) {
-  	logger.debug('[API] %s initialized.', controllerName);
+        controllers[controllerName](router);
+    });
 
-    controllers[controllerName](router);
-  });
-
-  app.use(router);
+    app.use(router);
 };

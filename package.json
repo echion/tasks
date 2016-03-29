@@ -1,13 +1,21 @@
 {
   "name": "echion-tasks",
   "version": "1.0.0",
-  "description": "tasks service for the echion platform",
+  "description": "Tasks service for the echion platform",
   "main": "app.js",
+  "scripts-info": {
+    "info": "List available scripts",
+    "lint": "Lints all code",
+    "cover": "Execute all tests with code coverage",
+    "start": "Starts the web api",
+    "test": "Runs a full local build and test with code coverage"
+  },
   "scripts": {
-    "lint": "jshint .",
+    "info": "npm-scripts-info",
+    "lint": "eslint .",
     "cover": "istanbul cover _mocha",
     "start": "node app.js",
-    "test": "jshint . && istanbul cover _mocha"
+    "test": "npm-run-all lint cover"
   },
   "engines": {
     "node": "5.6.0",
@@ -42,10 +50,13 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^2.5.3",
     "istanbul": "^0.4.2",
     "jshint": "^2.9.1",
     "mocha": "^2.4.5",
     "node-mocks-http": "^1.5.2",
+    "npm-run-all": "^1.6.0",
+    "npm-scripts-info": "^0.3.5",
     "should": "^8.2.2",
     "sinon": "^1.17.3",
     "superagent": "^1.8.1",

@@ -1,9 +1,9 @@
-'option strict';
+'use strict';
 
 var env = require('envalid');
 
 env.validate(process.env, {
-    NODE_ENV: { required: true, choices: [ 'production', 'test', 'development' ] },
+    NODE_ENV: { required: true, choices: ['production', 'test', 'development'] },
     DB_URI: { required: true },
     DB_USER: { required: true },
     DB_PASSWORD: { required: true },
