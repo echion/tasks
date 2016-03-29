@@ -1,31 +1,27 @@
-module.exports = {
+'use strict';
+
+var db = require('../db');
+
+var migrationsModule = module.exports = {
 	name: 'db',
 	configure: function(app) {
-		// 'use strict';
+		return db.constraints.uniqueness.createIfNoneAsync('Tag', 'normalizedName')
+				 .then(function() {
+				 	return migrationsModule.createLegacyIndicesAsync();
+				 });
+	},
+	createLegacyIndicesAsync: function() {
+		return new Promise(function(resolve, reject) {
+			var options = {
+				provider: 'lucene',
+				type: 'fulltext'
+		   	};
 
-		// var BPromise = require('bluebird'),
-		// 	db = require('../db'),
-		// 	index = db.index;
+		   	options['to_lower_case'] = true;
 
-		// BPromise.promisifyAll(index);
-
-		// return index.createIfNoneAsync('Tag', 'normalizedName');
-
-
-		// IndexManager.PROVIDER, "lucene", "type", "fulltext" 
-		// to_lower_case  true
-
-		// "provider" : "lucene"
-
-		// POST http://localhost:7474/db/data/index/node/
-		// Accept: application/json; charset=UTF-8
-		// Content-Type: application/json
-		// {
-		//   "name" : "node_auto_index",
-		//   "config" : {
-		//     "type" : "fulltext",
-		//     "provider" : "lucene"
-		//   }
-		// }
-	}	
+		 	db.node.legacyindex.create('Tags', options, function(err, results) {
+		 		resolve();
+		 	});
+		});
+	}
 };

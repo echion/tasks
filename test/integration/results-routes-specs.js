@@ -4,7 +4,7 @@ var dropDatabase = require('./drop-database'),
     app,
     agent;
 
-describe('tag routes', function() {
+describe('result routes', function() {
   var result, 
       tag;
 
@@ -30,18 +30,22 @@ describe('tag routes', function() {
       .expect(function(res) {
         result = res.body;
       })
-      .end(function() {
+      .end(function(err) {
+        if (err) return done(err);
+
         agent
           .post('/results')
           .send({ name: 'Testing2' })
           .expect(201)
-          .end(function() {
+          .end(function(err) {
+            if (err) return done(err);
+
             agent
               .post('/tags')
               .send({ name: 'testing' })
-              .expect(200)
+              .expect(201)
               .expect(function(res) {
-                tag = res;
+                tag = res.body;
               })
               .end(done);
           });
@@ -91,11 +95,13 @@ describe('tag routes', function() {
         name: 'another new result',
         tags: [tag.id]
       })
-      .expect(200)
+      .expect(201)
       .expect(function(res) {
         res.body.should.have.property('id');
       })
-      .end(function() {
+      .end(function(err) {
+        if (err) return done(err);
+
         agent
           .get('/results/' + result.id)
           .expect(200)
@@ -111,7 +117,9 @@ describe('tag routes', function() {
       .expect(function(res) {
         res.body.name.should.equal('updated name');
       })
-      .end(function() {
+      .end(function(err) {
+        if (err) return done(err);
+        
         agent
           .get('/results/' + result.id)
           .expect(200)
@@ -158,7 +166,9 @@ describe('tag routes', function() {
     agent
       .delete('/results/' + result.id)
       .expect(204)
-      .end(function() {
+      .end(function(err) {
+        if (err) return done(err);
+        
         agent
           .get('/results/' + result.id)
           .expect(404)

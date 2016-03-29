@@ -26,19 +26,23 @@ describe('result tags routes', function() {
     agent
       .post('/tags')
       .send({ name: 'tag1'})
-      .expect(200)
+      .expect(201)
       .expect(function(res) {
         tag1 = res.body;
       })
-      .end(function() {
+      .end(function(err) {
+        if (err) return done(err);
+        
         agent
           .post('/tags')
           .send({ name: 'tag2' })
-          .expect(200)
+          .expect(201)
           .expect(function(res) {
             tag2 = res.body;
           })
-          .end(function() {
+          .end(function(err) {
+            if (err) return done(err);
+        
             agent
               .post('/results')
               .send({ 

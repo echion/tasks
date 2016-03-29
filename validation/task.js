@@ -5,8 +5,8 @@ module.exports = {
   	id: Joi.number()
   },
   body: {
-    name: Joi.string().required().max(250),
-	notes: Joi.string(),
+    name: Joi.string().trim().required().max(250),
+	notes: Joi.string().trim(),
 	priority: Joi.number(),
 	dueBy: Joi.date(),
 	scheduledFor: Joi.date(),

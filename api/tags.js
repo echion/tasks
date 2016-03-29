@@ -23,8 +23,8 @@ module.exports = function(router) {
 
 	router.post('/tags', validate(rules.tag), function(req, res, next) {
 		Model.getByNameOrDefineAsync(req.body.name)
-			 .then(function(tag) { 
-			 	res.status(200).json(tag); 
+			 .then(function(result) { 
+			 	res.status(result.created ? 201 : 200).json(result.model); 
 			 })
 			 .catch(next);
 	});

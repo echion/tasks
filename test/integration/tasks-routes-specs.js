@@ -128,7 +128,9 @@ describe('task routes', function() {
     agent
       .post('/tasks/' + task.id + '/cancel')
       .expect(204)
-      .end(function() {
+      .end(function(err) {
+        if (err) return done(err);
+        
         agent
           .get('/tasks/' + task.id)
           .expect(200)
@@ -143,7 +145,9 @@ describe('task routes', function() {
     agent
       .delete('/tasks/' + task.id)
       .expect(204)
-      .end(function() {
+      .end(function(err) {
+        if (err) return done(err);
+
         agent
           .get('/tasks/' + task.id)
           .expect(404)

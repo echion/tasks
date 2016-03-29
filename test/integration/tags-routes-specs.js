@@ -25,20 +25,22 @@ describe('tag routes', function() {
     agent
       .post('/tags')
       .send({ name: 'Testing1' })
-      .expect(200)
+      .expect(201)
       .expect(function(res) {
         tag = res.body;
       })
-      .end(function() {
+      .end(function(err) {
+        if (err) return done(err);
+
         agent
           .post('/tags')
           .send({ name: 'Testing2' })
-          .expect(200)
+          .expect(201)
           .end(done);
       });
   }); 
 
-  it('get all should return tag', function(done) {
+  it('get all should return tags', function(done) {
     agent
       .get('/tags')
       .expect(200)
@@ -113,7 +115,7 @@ describe('tag routes', function() {
     agent
       .post('/tags')
       .send({ name: 'another new tag'})
-      .expect(200)
+      .expect(201)
       .expect(function(res) {
         res.body.should.have.property('id');
       })

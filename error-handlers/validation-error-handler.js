@@ -1,10 +1,16 @@
 module.exports = function(err, req, res, next) {
 	'use strict';
 	
-    var validation = require('express-validation');
+    var validation = require('express-validation'),
+    	logger = require('../logger'),
+    	RuleError = require('../models/rule-error');
 
-    if (err instanceof validation.ValidationError) 
-      return res.status(400).json(err);
+    if (err instanceof validation.ValidationError || err instanceof RuleError) {
+    	logger.info('Validation error');
+    	logger.info(err);
+
+      	return res.status(400).json(err);
+    }
 
     next(err);
 };

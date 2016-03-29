@@ -15,7 +15,7 @@ describe('not found error handler', function() {
       errorHandler = require('../../error-handlers/not-found-handler');
 
   it('should handle neo4j not found errors', function(done) {
-    var error = { neo4jException: 'NodeNotFoundException' },
+    var error = { statusCode: 404 },
         next = sinon.spy();
 
     errorHandler(error, request, response, next);

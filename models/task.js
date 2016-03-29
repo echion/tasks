@@ -3,7 +3,8 @@
 const db = require('../db'),
 	  label = 'Task',
   	  taskStatuses = require('../models/task-statuses'),
-  	  RuleError = require('./rule-error');
+  	  RuleError = require('./rule-error'),
+  	  logger = require('../logger');
 
 module.exports = {
 	findByIdAsync: function(id) {

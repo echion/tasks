@@ -1,26 +1,36 @@
-module.exports = function(done) {
-	'use strict';
+'use strict';
 
+var db = require('../../db');
+
+function deleteLegacyIndexAsync(name) {
+	return new Promise(function(resolve) {
+		db.node.legacyindex.delete(name, function() {
+			resolve(); //ignore errors
+		});
+	});
+}
+
+module.exports = function(done) {
 	var request = require('superagent'),
 		env = require('../../config'),
-		logger = require('../../logger');
+		logger = require('../../logger'),
+		migrations = require('../../initializers/migrations');
 
-	request
-		.post(env.get('DB_URI') + '/graphaware/resttest/clear')
-		.auth(env.get('DB_USER'), env.get('DB_PASSWORD'))
-		.end(done);
+	deleteLegacyIndexAsync('Tags')
+		.then(function() {
+			return migrations.createLegacyIndicesAsync();
+		})
+		.then(function() {
+			request
+				.post(env.get('DB_URI') + '/graphaware/resttest/clear')
+				.auth(env.get('DB_USER'), env.get('DB_PASSWORD'))
+				.end(function() {
+					logger.debug('database cleared');		
 
-	logger.debug('database cleared');
-	
-	// var //mongoose = require('mongoose'),
-	// 	env = require('../../config'),
-	// 	//conn = mongoose.createConnection(env.get('DB_URI'));
+					done();
+				});
 
-	// conn.once('open', function() {
- //       	for (var i in mongoose.connection.collections) {
-	//       mongoose.connection.collections[i].remove(function() {});
-	//     }
-	    
-	//     done();
- //    });
+			return Promise.resolve();
+		})
+		.catch(done);
 };

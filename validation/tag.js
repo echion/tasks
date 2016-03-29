@@ -5,6 +5,6 @@ module.exports = {
   	id: Joi.number()
   },
   body: {
-    name: Joi.string().required().max(50)
+    name: Joi.string().trim().required().max(50)
   }
 };

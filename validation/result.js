@@ -5,7 +5,7 @@ module.exports = {
   	id: Joi.number()
   },
   body: {
-    name: Joi.string().required().max(250),
+    name: Joi.string().trim().required().max(250),
     completed: Joi.boolean().default(false),
     tags: Joi.array().items(Joi.number())
   }

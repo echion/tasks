@@ -50,7 +50,7 @@ module.exports = function(router) {
 	router.delete('/tasks/:id', validate(rules.id), function(req, res, next) {
 		Model.deleteAsync(req.params.id)
 			 .then(function() {
-			 	res.sendStatus();
+			 	res.sendStatus(204);
 			 })
 			 .catch(next);
 	});
