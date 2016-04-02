@@ -7,8 +7,15 @@ env.validate(process.env, {
     DB_URI: { required: true },
     DB_USER: { required: true },
     DB_PASSWORD: { required: true },
-    //DB_OPTIONS: { parse: JSON.parse, default: {} },
-    LOG_LEVEL: { default: 'debug' },
+    LOG_STREAMS: {
+        parse: JSON.parse,
+        default: [
+            {
+                level: 'error',
+                stream: process.stdout
+            }
+        ]
+    },
     API_PORT: { parse: env.toNumber, default: 8080 }
 });
 

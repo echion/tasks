@@ -34,6 +34,8 @@
   "dependencies": {
     "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
+    "bunyan": "^1.8.0",
+    "bunyan-cloudwatch": "^2.0.0",
     "envalid": "^0.2.0",
     "express": "^4.13.4",
     "express-initializers": "0.0.1",
@@ -42,6 +44,7 @@
     "joi-objectid": "^2.0.0",
     "lodash": "^4.6.1",
     "morgan": "^1.6.1",
+    "node-uuid": "^1.4.7",
     "request-promise": "^2.0.1",
     "require-dir": "^0.3.0",
     "seraph": "^0.14.2",

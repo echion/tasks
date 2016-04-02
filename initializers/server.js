@@ -2,15 +2,12 @@
 
 module.exports = {
     name: 'server',
+    after: 'request-id',
     configure: function(app) {
-        var bodyParser = require('body-parser'),
-            logger = require('../logger');
+        var bodyParser = require('body-parser');
 
         app.disable('etag');
         app.use(require('helmet')());
-        app.use(require('morgan')('common', {
-            stream: logger.stream
-        }));
 
         // parse all media types
         app.use(bodyParser.json({ type: '*/*' }));

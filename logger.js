@@ -1,14 +1,19 @@
 'use strict';
 
-var logger = require('winston'),
-    env = require('./config');
+var bunyan = require('bunyan'),
+    env = require('./config'),
+    streams = env.get('LOG_STREAMS').map(function(options) {
+        if (!options.factory) return options;
 
-logger.level = env.get('LOG_LEVEL');
-logger.stream = {
-    write: function(message, encoding) {
-        logger.info(message);
-    }
-};
+        var factory = require(options.factory);
 
-module.exports = logger;
+        delete options.factory;
+
+        return factory(options);
+    });
+
+module.exports = bunyan.createLogger({
+    name: 'echion-tasks',
+    streams: streams
+});
 
