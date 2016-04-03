@@ -25,7 +25,7 @@ module.exports = function(done) {
                 .post(env.get('DB_URI') + '/graphaware/resttest/clear')
                 .auth(env.get('DB_USER'), env.get('DB_PASSWORD'))
                 .end(function() {
-                    logger.debug('database cleared');
+                    logger.trace('database cleared');
 
                     done();
                 });

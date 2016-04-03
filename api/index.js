@@ -6,10 +6,10 @@ module.exports = function(app) {
         logger = require('winston'),
         router = express.Router();
 
-    logger.debug('[API] Initializing routes...');
+    logger.debug('Initializing routes...');
 
     Object.keys(controllers).forEach(function(controllerName) {
-        logger.debug('[API] %s initialized.', controllerName);
+        logger.debug('%s initialized.', controllerName);
 
         controllers[controllerName](router);
     });
