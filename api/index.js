@@ -3,7 +3,7 @@
 module.exports = function(app) {
     var controllers = require('require-dir')(),
         express = require('express'),
-        logger = require('winston'),
+        logger = require('../logger'),
         router = express.Router();
 
     logger.debug('Initializing routes...');

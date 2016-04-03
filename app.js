@@ -19,7 +19,8 @@ initialize(app)
         });
     })
     .catch(function (err) {
-        logger.error('Failed to initialize the API', { error: err });
+        logger.error({ err: err }, 'Failed to initialize the API');
+        console.error(err.stack);
     });
 
 module.exports = app;
