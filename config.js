@@ -11,7 +11,7 @@ env.validate(process.env, {
         parse: JSON.parse,
         default: [
             {
-                level: 'error',
+                level: 'warn',
                 stream: process.stdout
             }
         ]
