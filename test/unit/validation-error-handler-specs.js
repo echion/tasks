@@ -1,6 +1,6 @@
 'use strict';
 
-describe('validation error handler', function() {
+describe('[ERROR HANDLER] Validation error handler', function() {
     var sinon = require('sinon'),
         httpMocks = require('node-mocks-http'),
         validation = require('express-validation'),

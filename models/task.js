@@ -3,7 +3,8 @@
 var db = require('../db'),
     label = 'Task',
     taskStatuses = require('../models/task-statuses'),
-    RuleError = require('./rule-error');
+    RuleError = require('./rule-error'),
+    neo4jErrorHandler = require('./neo4j-error-handler');
 
 module.exports = {
     findByIdAsync: function(id) {
@@ -40,6 +41,7 @@ module.exports = {
                 });
     },
     deleteAsync: function(id) {
-        return db.deleteAsync(id, true);
+        return db.deleteAsync(id, true)
+                .catch(neo4jErrorHandler);
     }
 };

@@ -2,7 +2,7 @@
 
 var dropDatabase = require('./drop-database');
 
-describe('result model', function() {
+describe('[MODEL] Result model', function() {
     var model = require('../../models/result');
 
     before('init app', function(done) {

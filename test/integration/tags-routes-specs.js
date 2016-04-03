@@ -4,7 +4,7 @@ var dropDatabase = require('./drop-database'),
     app,
     agent;
 
-describe('tag routes', function() {
+describe('[API] /tags routes', function() {
     var tag;
 
     before('init app', function(done) {
@@ -40,7 +40,7 @@ describe('tag routes', function() {
             });
     });
 
-    it('get all should return tags', function(done) {
+    it('GET should return all tags', function(done) {
         agent
             .get('/tags')
             .expect(200)
@@ -51,7 +51,7 @@ describe('tag routes', function() {
             .end(done);
     });
 
-    it('get by id should return a tag', function (done) {
+    it('GET /:id should return a tag', function (done) {
         agent
             .get('/tags/' + tag.id)
             .expect(200)
@@ -62,7 +62,7 @@ describe('tag routes', function() {
             .end(done);
     });
 
-    it('get by name should return one tag', function(done) {
+    it('GET ?name={name} should return a tag', function(done) {
         agent
             .get('/tags?name=' + tag.name)
             .expect(200)
@@ -74,7 +74,7 @@ describe('tag routes', function() {
             .end(done);
     });
 
-    it('get by name should be case insensitive', function(done) {
+    it('GET ?name={name} should be case insensitive', function(done) {
         agent
             .get('/tags?name=' + tag.name.toLowerCase())
             .expect(200)
@@ -86,7 +86,7 @@ describe('tag routes', function() {
             .end(done);
     });
 
-    it('get by invalid name should return empty array', function(done) {
+    it('GET ?name={name} with missing name should return empty array', function(done) {
         agent
             .get('/tags?name=junk')
             .expect(200)
@@ -97,21 +97,21 @@ describe('tag routes', function() {
             .end(done);
     });
 
-    it('get by id with missing id should return not found', function(done) {
+    it('GET /:id with missing id should return not found', function(done) {
         agent
             .get('/tags/0')
             .expect(404)
             .end(done);
     });
 
-    it('get by id with invalid id should return bad request', function(done) {
+    it('GET /:id with invalid id should return bad request', function(done) {
         agent
             .get('/tags/s')
             .expect(400)
             .end(done);
     });
 
-    it('post should add a tag', function(done) {
+    it('POST should add a tag', function(done) {
         agent
             .post('/tags')
             .send({ name: 'another new tag'})
@@ -129,7 +129,7 @@ describe('tag routes', function() {
             });
     });
 
-    it('post with existing should return tag', function(done) {
+    it('POST with existing tag name should return that tag', function(done) {
         agent
             .post('/tags')
             .send({ name: tag.name })
@@ -141,7 +141,7 @@ describe('tag routes', function() {
             .end(done);
     });
 
-    it('post with existing should be case insensitive', function(done) {
+    it('POST with existing tag name should be case insensitive', function(done) {
         agent
             .post('/tags')
             .send({ name: tag.name.toLowerCase() })
@@ -153,7 +153,23 @@ describe('tag routes', function() {
             .end(done);
     });
 
-    it('put should update a tag', function(done) {
+    it('POST with undefined name should return bad request', function(done) {
+        agent
+            .post('/tags')
+            .send({ })
+            .expect(400)
+            .end(done);
+    });
+
+    it('POST with invalid property should return bad request', function(done) {
+        agent
+            .post('/tags')
+            .send({ desc: 'stuff' })
+            .expect(400)
+            .end(done);
+    });
+
+    it('PUT /:id should update a tag', function(done) {
         agent
             .put('/tags/' + tag.id)
             .send({ name: 'name2'})
@@ -174,15 +190,7 @@ describe('tag routes', function() {
             });
     });
 
-    it('post with missing name should return bad request', function(done) {
-        agent
-            .post('/tags')
-            .send({ })
-            .expect(400)
-            .end(done);
-    });
-
-    it('put with missing name should return bad request', function(done) {
+    it('PUT /:id with undefined name should return bad request', function(done) {
         agent
             .put('/tags/' + tag.id)
             .send({ })
@@ -190,15 +198,7 @@ describe('tag routes', function() {
             .end(done);
     });
 
-    it('post with invalid property should return bad request', function(done) {
-        agent
-            .post('/tags')
-            .send({ desc: 'stuff' })
-            .expect(400)
-            .end(done);
-    });
-
-    it('post with invalid property should return bad request', function(done) {
+    it('PUT /:id with invalid property should return bad request', function(done) {
         agent
             .put('/tags/' + tag.id)
             .send({ desc: 'stuff' })
@@ -206,7 +206,7 @@ describe('tag routes', function() {
             .end(done);
     });
 
-    it('delete should remove tag', function(done) {
+    it('DELETE /:id should remove the tag', function(done) {
         agent
             .delete('/tags/' + tag.id)
             .expect(204)
@@ -220,10 +220,17 @@ describe('tag routes', function() {
             });
     });
 
-    it('delete with invalid id should return bad request', function(done) {
+    it('DELETE /:id with invalid id should return bad request', function(done) {
         agent
             .delete('/tags/s')
             .expect(400)
+            .end(done);
+    });
+
+    it('DELETE /:id with missing id should ignore the attempt and return', function(done) {
+        agent
+            .delete('/tags/0')
+            .expect(204)
             .end(done);
     });
 });

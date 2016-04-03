@@ -4,7 +4,7 @@ var dropDatabase = require('./drop-database'),
     app,
     agent;
 
-describe('task cancellation', function() {
+describe('[API] /tasks routes', function() {
     var task;
 
     before('init app', function(done) {
@@ -39,7 +39,7 @@ describe('task cancellation', function() {
             });
     });
 
-    it('completing a cancelled task should fail', function(done) {
+    it('POST /:id/done to a cancelled task should return bad request', function(done) {
         agent
             .post('/tasks/' + task.id + '/done')
             .expect(400)

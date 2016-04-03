@@ -1,6 +1,6 @@
 'use strict';
 
-describe('default error handler', function() {
+describe('[ERROR HANDLER] Default handler', function() {
     var sinon = require('sinon'),
         httpMocks = require('node-mocks-http'),
         request  = httpMocks.createRequest({
@@ -14,7 +14,7 @@ describe('default error handler', function() {
         errorHandler = require('../../error-handlers/default-error-handler');
 
     it('should not call next for any error', function(done) {
-        var error = { message: 'an error occurred' },
+        var error = new Error('fake error occurred'),
             next = sinon.spy();
 
         errorHandler(error, request, response, next);

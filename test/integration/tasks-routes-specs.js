@@ -5,7 +5,7 @@ var dropDatabase = require('./drop-database'),
     app,
     agent;
 
-describe('task routes', function() {
+describe('[API] /tasks routes', function() {
     var task;
 
     before('init app', function(done) {
@@ -41,7 +41,7 @@ describe('task routes', function() {
             });
     });
 
-    it('get should return all tasks', function(done) {
+    it('GET should return all tasks', function(done) {
         agent
             .get('/tasks')
             .expect(200)
@@ -52,7 +52,7 @@ describe('task routes', function() {
             .end(done);
     });
 
-    it('get by id should return a task', function (done) {
+    it('GET /:id should return a task', function (done) {
         agent
             .get('/tasks/' + task.id)
             .expect(200)
@@ -63,21 +63,21 @@ describe('task routes', function() {
             .end(done);
     });
 
-    it('get by id with missing id should return not found', function(done) {
+    it('GET /:id with missing id should return not found', function(done) {
         agent
             .get('/tasks/0')
             .expect(404)
             .end(done);
     });
 
-    it('get by id with invalid id should return bad request', function(done) {
+    it('GET /:id with invalid id should return bad request', function(done) {
         agent
             .get('/tasks/s')
             .expect(400)
             .end(done);
     });
 
-    it('post should add a task', function(done) {
+    it('POST should add a task', function(done) {
         agent
             .post('/tasks')
             .send({ name: 'another new task'})
@@ -95,7 +95,7 @@ describe('task routes', function() {
             });
     });
 
-    it('post with missing name should return bad request', function(done) {
+    it('POST with undefined name should return bad request', function(done) {
         agent
             .post('/tasks')
             .send({ notes: 'another new task'})
@@ -103,7 +103,7 @@ describe('task routes', function() {
             .end(done);
     });
 
-    it('post with status should return bad request', function(done) {
+    it('POST with status should return bad request', function(done) {
         agent
             .post('/tasks')
             .send({ name: 'stuff', status: 5 })
@@ -111,7 +111,7 @@ describe('task routes', function() {
             .end(done);
     });
 
-    it('done should complete a task', function(done) {
+    it('POST /:id/done should complete a task', function(done) {
         agent
             .post('/tasks/' + task.id + '/done')
             .expect(204)
@@ -128,7 +128,7 @@ describe('task routes', function() {
             });
     });
 
-    it('cancel should cancel a task', function(done) {
+    it('POST /:id/cancel should cancel a task', function(done) {
         agent
             .post('/tasks/' + task.id + '/cancel')
             .expect(204)
@@ -145,7 +145,7 @@ describe('task routes', function() {
             });
     });
 
-    it('delete should remove task', function(done) {
+    it('DELETE /:id should remove a task', function(done) {
         agent
             .delete('/tasks/' + task.id)
             .expect(204)
@@ -159,10 +159,17 @@ describe('task routes', function() {
             });
     });
 
-    it('delete with invalid id should return bad request', function(done) {
+    it('DELETE /:id with invalid id should return bad request', function(done) {
         agent
             .delete('/tasks/s')
             .expect(400)
+            .end(done);
+    });
+
+    it('DELETE /:id with missing id should ignore the attempt and return', function(done) {
+        agent
+            .delete('/tasks/0')
+            .expect(204)
             .end(done);
     });
 });

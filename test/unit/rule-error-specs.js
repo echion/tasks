@@ -1,6 +1,6 @@
 'use strict';
 
-describe('rule error', function() {
+describe('RuleError', function() {
     var RuleError = require('../../models/rule-error'),
         error = new RuleError('oops', 400),
         util = require('util');

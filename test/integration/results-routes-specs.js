@@ -4,7 +4,7 @@ var dropDatabase = require('./drop-database'),
     app,
     agent;
 
-describe('result routes', function() {
+describe('[API] /results routes', function() {
     var result, tag;
 
     before('init app', function(done) {
@@ -51,7 +51,7 @@ describe('result routes', function() {
             });
     });
 
-    it('get all should return all results', function(done) {
+    it('GET should return all results', function(done) {
         agent
             .get('/results')
             .expect(200)
@@ -62,7 +62,7 @@ describe('result routes', function() {
             .end(done);
     });
 
-    it('get by id should return the result', function (done) {
+    it('GET /:id should return the result', function (done) {
         agent
             .get('/results/' + result.id)
             .expect(200)
@@ -73,21 +73,21 @@ describe('result routes', function() {
             .end(done);
     });
 
-    it('get by id with missing id should return not found', function(done) {
+    it('GET /:id with missing id should return not found', function(done) {
         agent
             .get('/results/0')
             .expect(404)
             .end(done);
     });
 
-    it('get by id with invalid id should return bad request', function(done) {
+    it('GET /:id with invalid id should return bad request', function(done) {
         agent
             .get('/results/s')
             .expect(400)
             .end(done);
     });
 
-    it('post should add a result', function(done) {
+    it('POST should add a result', function(done) {
         agent
             .post('/results')
             .send({
@@ -108,7 +108,31 @@ describe('result routes', function() {
             });
     });
 
-    it('put should update a result', function(done) {
+    it('POST with missing name should return bad request', function(done) {
+        agent
+            .post('/results')
+            .send({ })
+            .expect(400)
+            .end(done);
+    });
+
+    it('POST with invalid property should return bad request', function(done) {
+        agent
+            .post('/results')
+            .send({ desc: 'stuff' })
+            .expect(400)
+            .end(done);
+    });
+
+    it('POST with invalid property should return bad request', function(done) {
+        agent
+            .put('/results/' + result.id)
+            .send({ desc: 'stuff' })
+            .expect(400)
+            .end(done);
+    });
+
+    it('PUT /:id should update a result', function(done) {
         var newName = 'updated name';
 
         agent
@@ -131,15 +155,7 @@ describe('result routes', function() {
             });
     });
 
-    it('post with missing name should return bad request', function(done) {
-        agent
-            .post('/results')
-            .send({ })
-            .expect(400)
-            .end(done);
-    });
-
-    it('put with missing name should return bad request', function(done) {
+    it('PUT with missing name should return bad request', function(done) {
         agent
             .put('/results/' + result.id)
             .send({ })
@@ -147,23 +163,7 @@ describe('result routes', function() {
             .end(done);
     });
 
-    it('post with invalid property should return bad request', function(done) {
-        agent
-            .post('/results')
-            .send({ desc: 'stuff' })
-            .expect(400)
-            .end(done);
-    });
-
-    it('post with invalid property should return bad request', function(done) {
-        agent
-            .put('/results/' + result.id)
-            .send({ desc: 'stuff' })
-            .expect(400)
-            .end(done);
-    });
-
-    it('delete should remove result', function(done) {
+    it('DELETE /:id should remove result', function(done) {
         agent
             .delete('/results/' + result.id)
             .expect(204)
@@ -177,10 +177,17 @@ describe('result routes', function() {
             });
     });
 
-    it('delete with invalid id should return bad request', function(done) {
+    it('DELETE /:id with invalid id should return bad request', function(done) {
         agent
             .delete('/results/s')
             .expect(400)
+            .end(done);
+    });
+
+    it('DELETE /:id with missing id should ignore the attempt and return', function(done) {
+        agent
+            .delete('/results/0')
+            .expect(204)
             .end(done);
     });
 });

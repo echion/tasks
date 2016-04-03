@@ -1,6 +1,6 @@
 'use strict';
 
-describe('error logger', function() {
+describe('[ERROR HANDLER] Error logger', function() {
     var sinon = require('sinon'),
         httpMocks = require('node-mocks-http'),
         request  = httpMocks.createRequest({

@@ -1,8 +1,7 @@
 'use strict';
 
-var createNamespace = require('continuation-local-storage').createNamespace;
-
-createNamespace('echion.tasks.request');
+require('continuation-local-storage')
+    .createNamespace('echion.tasks.request');
 
 var env = require('./config'),
     logger = require('./logger'),

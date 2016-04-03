@@ -4,7 +4,7 @@ var dropDatabase = require('./drop-database'),
     app,
     agent;
 
-describe('result tags routes', function() {
+describe('[API] /results/:id/tags routes', function() {
     var result, tag1, tag2;
 
     before('init app', function(done) {
@@ -57,7 +57,7 @@ describe('result tags routes', function() {
             });
     });
 
-    it('get tags for result should return the tags', function(done) {
+    it('GET should return the tags for a result', function(done) {
         agent
         .get('/results/' + result.id + '/tags')
         .expect(200)
@@ -68,7 +68,7 @@ describe('result tags routes', function() {
         .end(done);
     });
 
-    it('update tags should replace all tags for a result', function(done) {
+    it('PUT should replace all tags for a result', function(done) {
         agent
             .put('/results/' + result.id + '/tags')
             .send([tag2.id])
@@ -87,7 +87,7 @@ describe('result tags routes', function() {
             });
     });
 
-    it('remove tag from result should remove the relationship', function(done) {
+    it('DELETE /:tagId should remove a tag relationship from a result', function(done) {
         agent
             .delete('/results/' + result.id + '/tags/' + tag1.id)
             .expect(204)
@@ -104,7 +104,7 @@ describe('result tags routes', function() {
             });
     });
 
-    it('remove unrealted tag should ignore the attempt and return', function(done) {
+    it('DELETE with unrealted tag id should ignore the attempt and return', function(done) {
         agent
             .delete('/results/' + result.id + '/tags/0')
             .expect(204)

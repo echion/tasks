@@ -5,7 +5,7 @@ module.exports = function(err, req, res, next) {
         status = err.status || err.statusCode || 500,
         logger = require('../logger');
 
-    logger.error(err);
+    logger.error({ err: err });
 
     res.status(status).json({
         message: err.message,

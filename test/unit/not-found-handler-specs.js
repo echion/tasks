@@ -1,6 +1,6 @@
 'use strict';
 
-describe('not found error handler', function() {
+describe('[ERROR HANDLER] Not Found handler', function() {
     var sinon = require('sinon'),
         httpMocks = require('node-mocks-http'),
         request  = httpMocks.createRequest({
@@ -13,7 +13,7 @@ describe('not found error handler', function() {
         response = httpMocks.createResponse(),
         errorHandler = require('../../error-handlers/not-found-handler');
 
-    it('should handle neo4j not found errors', function(done) {
+    it('should handle any error with statusCode 404', function(done) {
         var error = { statusCode: 404 },
             next = sinon.spy();
 

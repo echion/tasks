@@ -2,7 +2,7 @@
 
 var dropDatabase = require('./drop-database');
 
-describe('task model', function() {
+describe('[MODEL] Task model', function() {
     var taskModel = require('../../models/task');
 
     before('init app', function(done) {

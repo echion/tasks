@@ -2,7 +2,8 @@
 
 var db = require('../db'),
     label = 'Result',
-    array = require('lodash/array');
+    array = require('lodash/array'),
+    neo4jErrorHandler = require('./neo4j-error-handler');
 
 module.exports = {
     findByIdAsync: function(id) {
@@ -77,7 +78,8 @@ module.exports = {
         });
     },
     deleteAsync: function(id) {
-        return db.deleteAsync(id, true);
+        return db.deleteAsync(id, true)
+                .catch(neo4jErrorHandler);
     },
     removeTagAsync: function(resultId, tagId) {
         return new Promise(function(resolve, reject) {

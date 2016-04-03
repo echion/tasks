@@ -2,7 +2,8 @@
 
 var db = require('../db'),
     label = 'Tag',
-    indexName = 'Tags';
+    indexName = 'Tags',
+    neo4jErrorHandler = require('./neo4j-error-handler');
 
 function transform(tag) {
     if (!tag) return tag;
@@ -12,6 +13,7 @@ function transform(tag) {
 
     return tag;
 }
+
 function updateAsync(tag, newName) {
     return new Promise(function(resolve, reject) {
         var batch = db.batch();
@@ -112,6 +114,7 @@ var model = module.exports = {
                 });
     },
     deleteAsync: function(id) {
-        return db.deleteAsync(id, true);
+        return db.deleteAsync(id, true)
+                .catch(neo4jErrorHandler);
     }
 };
