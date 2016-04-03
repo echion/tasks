@@ -38,7 +38,7 @@ var fulltextModule = module.exports = {
                                encodeURIComponent(value.toLowerCase()));
         var uri = url.resolve(env.get('DB_URI'), path);
 
-        logger.debug('[QUERY] GET ' + uri);
+        logger.trace('GET %s', uri);
 
         var options = {
             uri: uri,

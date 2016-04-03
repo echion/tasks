@@ -6,8 +6,7 @@ module.exports = function(err, req, res, next) {
         RuleError = require('../models/rule-error');
 
     if (err instanceof validation.ValidationError || err instanceof RuleError) {
-        logger.info('Validation error');
-        logger.info(err);
+        logger.info(err, 'Validation error');
 
         return res.status(400).json(err);
     }

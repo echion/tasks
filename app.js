@@ -15,12 +15,11 @@ logger.info('Starting initialization...');
 initialize(app)
     .then(function () {
         app.listen(port, function() {
-            logger.info('Listening on port ' + port);
+            logger.info('Listening on port %d', port);
         });
     })
     .catch(function (err) {
         logger.error({ err: err }, 'Failed to initialize the API');
-        console.error(err.stack);
     });
 
 module.exports = app;
