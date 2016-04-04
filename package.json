@@ -7,6 +7,7 @@
     "info": "List available scripts",
     "lint": "Lints all code",
     "cover": "Execute all tests with code coverage",
+    "coveralls": "Sends the coverage report to coveralls.io",
     "start": "Starts the web api",
     "test": "Runs a full local build and test with code coverage"
   },
