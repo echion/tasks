@@ -45,6 +45,18 @@ module.exports = function(router) {
             .catch(next);
     });
 
+    router.put('/tasks/:id', validate(rules.task), function(req, res, next) {
+        var task = req.body;
+
+        task.id = req.params.id;
+
+        Model.updateAsync(task)
+            .then(function(t) {
+                res.json(t);
+            })
+            .catch(next);
+    });
+
     router.delete('/tasks/:id', validate(rules.id), function(req, res, next) {
         Model.deleteAsync(req.params.id)
             .then(function() {

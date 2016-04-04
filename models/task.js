@@ -18,6 +18,9 @@ module.exports = {
 
         return db.saveAsync(object, label);
     },
+    updateAsync: function(object) {
+        return db.saveAsync(object);
+    },
     completeAsync: function(id) {
         return db.readAsync(id)
                 .then(function(task) {

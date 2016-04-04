@@ -145,6 +145,37 @@ describe('[API] /tasks routes', function() {
             });
     });
 
+    it('PUT should update a task', function(done) {
+        var notes = 'some notes',
+            priority = 1;
+
+        agent
+            .put('/tasks/' + task.id)
+            .send({
+                name: task.name,
+                priority: priority,
+                notes: notes
+            })
+            .expect(200)
+            .expect(function(res) {
+                res.body.should.have.property('id');
+                res.body.notes.should.equal(notes);
+                res.body.priority.should.equal(priority);
+            })
+            .end(function(err) {
+                if (err) return done(err);
+
+                agent
+                    .get('/tasks/' + task.id)
+                    .expect(200)
+                    .expect(function(res) {
+                        res.body.notes.should.equal(notes);
+                        res.body.priority.should.equal(priority);
+                    })
+                    .end(done);
+            });
+    });
+
     it('DELETE /:id should remove a task', function(done) {
         agent
             .delete('/tasks/' + task.id)
