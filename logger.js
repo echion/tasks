@@ -1,5 +1,15 @@
 'use strict';
 
+function mapLogStream(options) {
+    if (!options.factory) return options;
+
+    var factory = require(options.factory);
+
+    delete options.factory;
+
+    return factory(options);
+}
+
 function onlyReturn(value) {
     return value;
 }
@@ -21,15 +31,7 @@ function serializeRequest(req) {
 
 var bunyan = require('bunyan'),
     env = require('./config'),
-    streams = env.get('LOG_STREAMS').map(function(options) {
-        if (!options.factory) return options;
-
-        var factory = require(options.factory);
-
-        delete options.factory;
-
-        return factory(options);
-    }),
+    streams = env.get('LOG_STREAMS').map(mapLogStream),
     logger = bunyan.createLogger({
         name: 'echion-tasks',
         serializers: {
@@ -46,9 +48,11 @@ function log(level) {
         var namespace = getNamespace('echion.tasks.request'),
             context = {},
             newArgs = [],
-            callerArgs,
             sliceStart = 0;
 
+        // Figure out if the first parameter is an error or an object.
+        // If it's an error, add it to the context so that it complies
+        // with the the 'fields' parameter for Bunyan logger calls.
         if (arguments[0] instanceof Error) {
             context.err = arguments[0];
             sliceStart = 1;
@@ -57,18 +61,16 @@ function log(level) {
             context = arguments[0];
             sliceStart = 1;
         }
-        else {
-            callerArgs = Array.prototype.slice.call(arguments, 0);
-        }
 
         newArgs.push(context);
-        callerArgs = Array.prototype.slice.call(arguments, sliceStart);
 
         // merge the arrays
-        Array.prototype.push.apply(newArgs, callerArgs);
+        Array.prototype.push.apply(newArgs, Array.prototype.slice.call(arguments, sliceStart));
 
+        // populate context from the request namespace
         if (namespace) {
             context.req = namespace.get('request');
+            context.res = namespace.get('response');
             context.user = namespace.get('user');
         }
 
