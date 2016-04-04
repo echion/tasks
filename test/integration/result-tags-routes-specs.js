@@ -98,7 +98,11 @@ describe('[API] /results/:id/tags routes', function() {
                     .get('/results/' + result.id + '/tags')
                     .expect(200)
                     .expect(function(res) {
-                        res.body.length.should.equal(0);
+                        var found = res.body.find(function(item) {
+                            return item.id === tag1.id;
+                        });
+
+                        expect(found).to.be.undefined;
                     })
                     .end(done);
             });
