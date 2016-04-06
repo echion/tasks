@@ -30,6 +30,7 @@ function serializeRequest(req) {
 }
 
 var bunyan = require('bunyan'),
+    _ = require('lodash/lang'),
     env = require('./config'),
     streams = env.get('LOG_STREAMS').map(mapLogStream),
     logger = bunyan.createLogger({
@@ -53,11 +54,11 @@ function log(level) {
         // Figure out if the first parameter is an error or an object.
         // If it's an error, add it to the context so that it complies
         // with the the 'fields' parameter for Bunyan logger calls.
-        if (arguments[0] instanceof Error) {
+        if (_.isError(arguments[0])) {
             context.err = arguments[0];
             sliceStart = 1;
         }
-        else if (arguments[0] instanceof Object) {
+        else if (_.isObject(arguments[0])) {
             context = arguments[0];
             sliceStart = 1;
         }
