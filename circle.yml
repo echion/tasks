@@ -14,12 +14,8 @@ dependencies:
     - npm install
 
 test:
-  override:
-    - npm test
-    - npm run coveralls
   post:
-    - docker info
-    - docker build -t echion-tasks .
+    - npm run coveralls
 
 deployment:
   master:

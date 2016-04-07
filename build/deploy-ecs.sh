@@ -1,6 +1,9 @@
 login=$(aws ecr get-login)
+name="echion-tasks"
 
 sh -c "$login"
 
-docker tag echion-tasks:latest $AWS_ECR_URL/echion:latest
-docker push $AWS_ECR_URL/echion:latest
+docker info
+docker build -t $name .
+docker tag $name:latest $AWS_ECR_URL/$name:latest
+docker push $AWS_ECR_URL/$name:latest
