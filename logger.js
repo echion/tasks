@@ -1,47 +1,9 @@
 'use strict';
 
-function mapLogStream(options) {
-    if (!options.factory) return options;
-
-    var factory = require(options.factory);
-
-    delete options.factory;
-
-    return factory(options);
-}
-
-function onlyReturn(value) {
-    return value;
-}
-
-function serializeRequest(req) {
-    if (!req) return req;
-
-    req.connection = req.connection || {};
-
-    return {
-        id: req.id,
-        method: req.method,
-        url: req.url,
-        headers: req.headers,
-        remoteAddress: req.connection.remoteAddress,
-        remotePort: req.connection.remotePort
-    };
-}
-
 var bunyan = require('bunyan'),
     _ = require('lodash/lang'),
-    env = require('./config'),
-    streams = env.get('LOG_STREAMS').map(mapLogStream),
-    logger = bunyan.createLogger({
-        name: 'echion-tasks',
-        serializers: {
-            err: bunyan.stdSerializers.err,
-            req: serializeRequest,
-            user: onlyReturn,
-        },
-        streams: streams
-    }),
+    loggerConfig = require('./logging/logger-config'),
+    logger = bunyan.createLogger(loggerConfig),
     getNamespace = require('continuation-local-storage').getNamespace;
 
 function log(level) {
