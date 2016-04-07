@@ -25,6 +25,7 @@ deployment:
   master:
     branch: master
     commands:
+      - aws ecr get-login
       - docker tag echion-tasks:latest $AWS_ECR_URL/echion-tasks:latest
       - docker push $AWS_ECR_URL/echion-tasks:latest
 
