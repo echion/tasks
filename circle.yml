@@ -25,6 +25,7 @@ deployment:
   master:
     branch: master
     commands:
+      - chmod +x ./build/deploy-ecs.sh
       - ./build/deploy-ecs.sh
 
 general:
