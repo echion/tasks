@@ -13,15 +13,20 @@ dependencies:
   override:
     - npm install
 
-
 test:
   override:
     - npm test
+    - npm run coveralls
   post:
     - docker info
-    - docker build -t echion/tasks .
-    - npm run coveralls
+    - docker build -t echion-tasks .
 
+deployment:
+  master:
+    branch: master
+    commands:
+      - docker tag echion-tasks:latest $AWS_ECR_URL/echion-tasks:latest
+      - docker push $AWS_ECR_URL/echion-tasks:latest
 
 general:
   artifacts:
