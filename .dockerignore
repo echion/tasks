@@ -1,3 +1,4 @@
+build
 test
 node_modules
 coverage
@@ -6,3 +7,4 @@ circle.yml
 .idea
 .jshintignore
 .jshintrc
+.eslintrc
