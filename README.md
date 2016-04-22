@@ -29,10 +29,9 @@ The CI/CD pipeline is hosted in CircleCI and is largely defined by the `circle.y
 
 The final step builds the docker containers and pushes the containers to AWS ECS.
 
+## Testing details
 
-## Delete database
-
-To delete the neo4j database, execute the following command:
+Neo4j is used for the primary database. The GraphAware Framework and the [GraphAware Neo4j RestTest](https://github.com/graphaware/neo4j-resttest) are used to clear the database before each test. If desired, the local database can also be deleted by executing the following command:
 ```
 rm -rf data/graph.db
 ```
