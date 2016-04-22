@@ -19,6 +19,17 @@ npm run info
 
 To run all linting tools, tests, and code coverage, run the `npm test` command.
 
+## CI/CD
+
+The CI/CD pipeline is hosted in CircleCI and is largely defined by the `circle.yml` file.  The basic sequence of the pipeline is:
+- build the CI test environment
+- run tests (`npm test`)
+- push code coverage reports to coveralls
+- run the build/deploy-ecs.sh script
+
+The final step builds the docker containers and pushes the containers to AWS ECS.
+
+
 ## Delete database
 
 To delete the neo4j database, execute the following command:
