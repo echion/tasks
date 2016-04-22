@@ -7,10 +7,13 @@
 
 
 
-# Local Setup
+## Local Setup
+
+To setup a local dev workstation, refer to the [Tools setup](https://github.com/echion/tools).
 
 ## Delete database
 
+To delete the neo4j database, execute the following command:
 ```
 rm -rf data/graph.db
 ```
